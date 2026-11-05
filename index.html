@@ -4,706 +4,600 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Queenstown Trip Planner (Nov 15 - Nov 18, 2026)</title>
+    <!-- Tailwind CSS for sleek responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nzblue: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            900: '#0c4a6e',
+                        },
+                        nzalpine: '#0f172a',
+                    },
+                    animation: {
+                        highlight: 'pulseHighlight 1.5s ease-out 1',
+                    },
+                    keyframes: {
+                        pulseHighlight: {
+                            '0%': { boxShadow: '0 0 0 4px rgba(14, 165, 233, 0.6)', transform: 'scale(1.02)' },
+                            '100%': { boxShadow: '0 0 0 0px rgba(14, 165, 233, 0)', transform: 'scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
-        :root {
-            --primary: #0284c7;
-            --primary-dark: #0369a1;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-color: #1e293b;
-            --text-light: #64748b;
-            --border-color: #e2e8f0;
-            --accent: #f59e0b;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f8fafc;
         }
-
-        header {
-            background: linear-gradient(135deg, #0f172a, #1e3a8a);
-            color: white;
-            text-align: center;
-            padding: 2.5rem 1rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 2.2rem;
-        }
-
-        header p {
-            margin: 0.5rem 0 0;
-            color: #94a3b8;
-            font-size: 1.1rem;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        /* Controls / Actions bar */
-        .actions-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background 0.2s;
-        }
-
-        .btn:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .btn-accent {
-            background-color: var(--accent);
-            color: #1e293b;
-        }
-        .btn-accent:hover {
-            background-color: #d97706;
-            color: white;
-        }
-
-        /* Day Tabs */
-        .day-tabs {
-            display: flex;
-            gap: 0.5rem;
-            overflow-x: auto;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-        }
-
-        .tab-btn {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 0.75rem 1.25rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--text-light);
-            white-space: nowrap;
-            transition: all 0.2s;
-        }
-
-        .tab-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        /* Timeline Card styling */
-        .day-container {
+        /* Custom scrollbar for day tabs */
+        .hide-scrollbar::-webkit-scrollbar {
             display: none;
         }
-
-        .day-container.active {
-            display: block;
-        }
-
-        .timeline {
-            position: relative;
-            padding-left: 2rem;
-            border-left: 3px solid var(--primary);
-            margin-left: 1rem;
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 2rem;
-            background: var(--card-bg);
-            padding: 1.25rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            border: 1px solid var(--border-color);
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -2.45rem;
-            top: 1.25rem;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: var(--primary);
-            border: 3px solid var(--bg-color);
-        }
-
-        .time-badge {
-            display: inline-block;
-            background: #e0f2fe;
-            color: var(--primary-dark);
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .activity-title {
-            font-size: 1.15rem;
-            font-weight: 600;
-            margin: 0 0 0.5rem 0;
-        }
-
-        .activity-desc {
-            color: var(--text-light);
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-        }
-
-        .activity-images {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .activity-images img {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-        }
-
-        .item-actions {
-            margin-top: 1rem;
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .btn-sm {
-            padding: 0.3rem 0.6rem;
-            font-size: 0.8rem;
-            border-radius: 4px;
-            cursor: pointer;
-            border: 1px solid var(--border-color);
-            background: #f1f5f9;
-        }
-        .btn-sm:hover { background: #e2e8f0; }
-        .btn-danger { color: #dc2626; border-color: #fecaca; background: #fef2f2; }
-        .btn-danger:hover { background: #fee2e2; }
-
-        /* Modal & Drawer */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-        .modal-content h3 { margin-top: 0; }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-            font-size: 0.9rem;
-        }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        .modal-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 0.5rem;
-            margin-top: 1.5rem;
-        }
-
-        /* Adventure Options Section */
-        .adventure-section {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-top: 3rem;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .adventure-section h2 { margin-top: 0; color: var(--primary-dark); }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-        }
-        th, td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.9rem;
-        }
-        th {
-            background: #f8fafc;
-            font-weight: 600;
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
-<body>
+<body class="text-slate-800 min-h-screen flex flex-col justify-between">
 
-    <header>
-        <h1>🇳🇿 Queenstown Trip Planner</h1>
-        <p>Sunday, 15 Nov 2026 – Wednesday, 18 Nov 2026 (Flight at 3 PM)</p>
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-slate-900 via-sky-950 to-slate-900 text-white py-8 px-4 shadow-lg border-b border-sky-900/40">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 bg-sky-500/10 text-sky-300 text-xs font-semibold px-3 py-1 rounded-full border border-sky-400/20 mb-3">
+                <i class="ph ph-compass text-sm">null</i> NEW ZEALAND 2026 ITINERARY
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Queenstown Trip Planner</h1>
+            <p class="text-slate-300 mt-2 text-sm sm:text-base flex items-center justify-center gap-2">
+                <i class="ph ph-calendar text-sky-400">null</i> Sun, Nov 15 – Wed, Nov 18, 2026
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+                <i class="ph ph-airplane-takeoff text-sky-400">null</i> Return Flight: 3:00 PM
+            </p>
+        </div>
     </header>
 
-    <div class="container">
-        
-        <div class="actions-bar">
-            <div class="day-tabs" id="dayTabs">
-                <button class="tab-btn active" onclick="switchDay('day1')">Sun, 15 Nov</button>
-                <button class="tab-btn" onclick="switchDay('day2')">Mon, 16 Nov (Milford Sound)</button>
-                <button class="tab-btn" onclick="switchDay('day3')">Tue, 17 Nov</button>
-                <button class="tab-btn" onclick="switchDay('day4')">Wed, 18 Nov</button>
-            </div>
-            <button class="btn btn-accent" onclick="openAddModal()">+ Add Activity</button>
-        </div>
+    <!-- Main Content Container -->
+    <main class="max-w-4xl mx-auto w-full px-4 py-6 flex-grow">
 
-        <!-- DAY 1 -->
-        <div id="day1" class="day-container active">
-            <div class="timeline" data-day="day1">
-                <div class="timeline-item" data-id="1-1">
-                    <span class="time-badge">8:00 AM</span>
-                    <h3 class="activity-title">Home to Queenstown (Collect Car)</h3>
-                    <p class="activity-desc">Pick up rental car and get ready for the adventure.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-                <div class="timeline-item" data-id="1-2">
-                    <span class="time-badge">9:30 AM</span>
-                    <h3 class="activity-title">Drive to Skyline</h3>
-                    <p class="activity-desc">Head over to the Skyline base terminal.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-                <div class="timeline-item" data-id="1-3">
-                    <span class="time-badge">11:00 AM</span>
-                    <h3 class="activity-title">Take Gondola to Luge ride</h3>
-                    <p class="activity-desc">Scenic gondola ride up Bob's Peak.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-                <div class="timeline-item" data-id="1-4">
-                    <span class="time-badge">12:00 PM</span>
-                    <h3 class="activity-title">Do Luge ride</h3>
-                    <p class="activity-desc">High-speed downhill gravity thrill rides.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-                <div class="timeline-item" data-id="1-5">
-                    <span class="time-badge">1:00 PM</span>
-                    <h3 class="activity-title">Do lunch _________</h3>
-                    <p class="activity-desc">Unscheduled slot: choose a restaurant or cafe in Queenstown.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-                <div class="timeline-item" data-id="1-6">
-                    <span class="time-badge">3:00 PM</span>
-                    <h3 class="activity-title">Bob’s Cove Lake</h3>
-                    <p class="activity-desc">Beautiful short nature walk and lake views.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-                <div class="timeline-item" data-id="1-7">
-                    <span class="time-badge">4:00 PM</span>
-                    <h3 class="activity-title">Sam Summers Hut</h3>
-                    <p class="activity-desc">Historic gold mining site walk.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-                <div class="timeline-item" data-id="1-8">
-                    <span class="time-badge">6:00 PM</span>
-                    <h3 class="activity-title">Do Groceries (Woolworth)</h3>
-                    <p class="activity-desc">Stock up on supplies and snacks.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-                <div class="timeline-item" data-id="1-9">
-                    <span class="time-badge">7:00 PM</span>
-                    <h3 class="activity-title">Dinner _____________</h3>
-                    <p class="activity-desc">Unscheduled slot for dinner.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-                <div class="timeline-item" data-id="1-10">
-                    <span class="time-badge">9:00 PM</span>
-                    <h3 class="activity-title">Home</h3>
-                    <p class="activity-desc">Head back to accommodation to rest.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- DAY 2 -->
-        <div id="day2" class="day-container">
-            <div class="timeline" data-day="day2">
-                <div class="timeline-item" data-id="2-1">
-                    <span class="time-badge">6:30 AM</span>
-                    <h3 class="activity-title">Leave Home</h3>
-                    <p class="activity-desc">Early departure for Milford Sound road trip.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-                <div class="timeline-item" data-id="2-2">
-                    <span class="time-badge">11:00 AM</span>
-                    <h3 class="activity-title">Cruise</h3>
-                    <p class="activity-desc">Milford Sound Scenic Cruise.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-                <div class="timeline-item" data-id="2-3">
-                    <span class="time-badge">1:30 PM</span>
-                    <h3 class="activity-title">Lunch (Grab and Go)</h3>
-                    <p class="activity-desc">Grab and go due to time constraint, otherwise we won't be able to see the lookouts before sunset.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-                <div class="timeline-item" data-id="2-4">
-                    <span class="time-badge">2:00 PM</span>
-                    <h3 class="activity-title">Stop at Milford Sound Lookouts (Max 30 min each)</h3>
-                    <p class="activity-desc">Scenic stops along the route back:</p>
-                    <ul style="margin: 0.5rem 0 0.5rem 1.2rem; padding:0; color:var(--text-light); font-size: 0.9rem;">
-                        <li><strong>The Chasm Walk:</strong> 20 min walk, 400m return track.</li>
-                        <li><strong>Hundred Falls:</strong> Massive cascading mountain waterfalls.</li>
-                        <li><strong>Homer Tunnel:</strong> Alpine engineering marvel.</li>
-                        <li><strong>Gertrude Valley Lookout:</strong> Breathtaking alpine valley views.</li>
-                        <li><strong>Monkey Creek:</strong> Fresh natural mountain drinking water source.</li>
-                        <li><strong>Lake Marian Track:</strong> Short walk along the waterfall.</li>
-                        <li><strong>Hollyford Valley & Pop’s View Lookout:</strong> Expansive valley panoramas.</li>
-                        <li><strong>Lake Gunn Viewpoint:</strong> 3.25km, 480m altitude lake stop.</li>
-                        <li><strong>Eglinton Valley:</strong> Glacial valley with towering peaks.</li>
-                    </ul>
-                    <div class="activity-images">
-                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='120'><rect width='100%' height='100%' fill='%23cbd5e1'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23475569' font-family='sans-serif' font-size='12'>The Chasm Walk</text></svg>" alt="The Chasm Walk">
-                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='120'><rect width='100%' height='100%' fill='%23cbd5e1'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23475569' font-family='sans-serif' font-size='12'>Hundred Falls</text></svg>" alt="Hundred Falls">
-                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='120'><rect width='100%' height='100%' fill='%23cbd5e1'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23475569' font-family='sans-serif' font-size='12'>Homer Tunnel</text></svg>" alt="Homer Tunnel">
-                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='120'><rect width='100%' height='100%' fill='%23cbd5e1'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23475569' font-family='sans-serif' font-size='12'>Lake Marian Track</text></svg>" alt="Lake Marian">
-                    </div>
-                    <div class="item-actions" style="margin-top: 1rem;">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-                <div class="timeline-item" data-id="2-5">
-                    <span class="time-badge">9:00 PM - 10:00 PM</span>
-                    <h3 class="activity-title">Dinner _________________</h3>
-                    <p class="activity-desc">Late dinner upon returning.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- DAY 3 -->
-        <div id="day3" class="day-container">
-            <div class="timeline" data-day="day3">
-                <div class="timeline-item" data-id="3-1">
-                    <span class="time-badge">10:00 AM</span>
-                    <h3 class="activity-title">KJet</h3>
-                    <p class="activity-desc">Thrilling Queenstown jet boating experience.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-                <div class="timeline-item" data-id="3-2">
-                    <span class="time-badge">11:00 AM or 1:00 PM</span>
-                    <h3 class="activity-title">TSS Earnslaw with Lunch</h3>
-                    <p class="activity-desc">Historic steamship cruise across Lake Wakatipu to Walter Peak Farm.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-                <div class="timeline-item" data-id="3-3">
-                    <span class="time-badge">Afternoon / Evening</span>
-                    <h3 class="activity-title">__________ (Open Slot for Adventure Activity)</h3>
-                    <p class="activity-desc">Choose from adventure options below (Bungy, Zipline, Canyon Swing, etc.)</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-                <div class="timeline-item" data-id="3-4">
-                    <span class="time-badge">9:00 PM</span>
-                    <h3 class="activity-title">Dinner ________</h3>
-                    <p class="activity-desc">Evening meal.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- DAY 4 -->
-        <div id="day4" class="day-container">
-            <div class="timeline" data-day="day4">
-                <div class="timeline-item" data-id="4-1">
-                    <span class="time-badge">Morning</span>
-                    <h3 class="activity-title">__________ (Not decided yet)</h3>
-                    <p class="activity-desc">Pack up, final souvenir shopping, or quick morning activity before heading to the airport.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-                <div class="timeline-item" data-id="4-2">
-                    <span class="time-badge">12:00 PM</span>
-                    <h3 class="activity-title">Head to Airport & Drop Rental Car</h3>
-                    <p class="activity-desc">Return vehicle and complete airport check-in procedures.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-                <div class="timeline-item" data-id="4-3">
-                    <span class="time-badge">3:00 PM</span>
-                    <h3 class="activity-title">Return Flight</h3>
-                    <p class="activity-desc">Flight departs for home.</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ADVENTURE OPTIONS REFERENCE TABLE -->
-        <div class="adventure-section">
-            <h2>🎯 Queenstown Adventure Options Reference</h2>
-            <p style="color: var(--text-light); font-size: 0.9rem;">Review these available activities and time slots when discussing additions with your friends or filling out open schedule slots!</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Activity</th>
-                        <th>Available Timings</th>
-                        <th>Duration</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>KJet</strong></td>
-                        <td>10 AM, 11 AM, 12 PM, 1 PM, 2 PM, 3 PM, 4 PM, 5 PM, 6 PM</td>
-                        <td>1 Hour</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Kayaking</strong></td>
-                        <td>9:00 AM</td>
-                        <td>3 to 4 Hours</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Shooting Range</strong></td>
-                        <td>10 AM, 11 AM, 12 PM, 1 PM, 2 PM, 3 PM, 4 PM</td>
-                        <td>45 Mins</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Jet Sprint Boating & Clay Target Shooting</strong></td>
-                        <td>Flexible / Check availability</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ziplining</strong></td>
-                        <td>10:00 AM to 5:00 PM</td>
-                        <td>Roughly 2 Hours</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Shotover Canyon Swing</strong></td>
-                        <td>9:30 AM, 10:30 AM, 12:00 PM, 1:00 PM, 1:30 PM, 2:30 PM</td>
-                        <td>2.5 to 4 Hours</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Bungy Jumping</strong></td>
-                        <td>Multiple slots from 9:30 AM to 3:00 PM</td>
-                        <td>2.5 Hours</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-    </div>
-
-    <!-- Modal for Add/Edit -->
-    <div id="activityModal" class="modal">
-        <div class="modal-content">
-            <h3 id="modalTitle">Add Activity</h3>
-            <input type="hidden" id="editItemTarget">
-            <div class="form-group">
-                <label for="modalDaySelect">Day</label>
-                <select id="modalDaySelect">
-                    <option value="day1">Sunday, 15 Nov</option>
-                    <option value="day2">Monday, 16 Nov</option>
-                    <option value="day3">Tuesday, 17 Nov</option>
-                    <option value="day4">Wednesday, 18 Nov</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="modalTime">Time</label>
-                <input type="text" id="modalTime" placeholder="e.g. 2:00 PM">
-            </div>
-            <div class="form-group">
-                <label for="modalTitleInput">Activity Title</label>
-                <input type="text" id="modalTitleInput" placeholder="e.g. Bungy Jumping">
-            </div>
-            <div class="form-group">
-                <label for="modalDesc">Description</label>
-                <textarea id="modalDesc" rows="3" placeholder="Add details..."></textarea>
-            </div>
-            <div class="modal-buttons">
-                <button class="btn" style="background:#64748b;" onclick="closeModal()">Cancel</button>
-                <button class="btn" onclick="saveActivity()">Save Activity</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let currentEditingElement = null;
-
-        function switchDay(dayId) {
-            document.querySelectorAll('.day-container').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        <!-- Top Actions & Navigation Bar -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-6">
             
-            document.getElementById(dayId).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
+            <!-- Day Selection Tabs -->
+            <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-1 sm:pb-0" id="dayTabsContainer">
+                <button onclick="switchDay('day1')" id="tab-day1" class="day-tab px-4 py-2.5 rounded-xl font-medium text-sm whitespace-nowrap transition-all border border-transparent bg-slate-900 text-white shadow-sm flex items-center gap-1.5">
+                    <span>Sun 15 Nov</span>
+                </button>
+                <button onclick="switchDay('day2')" id="tab-day2" class="day-tab px-4 py-2.5 rounded-xl font-medium text-sm whitespace-nowrap transition-all border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 flex items-center gap-1.5">
+                    <span>Mon 16 Nov</span>
+                    <span class="text-[10px] bg-sky-100 text-sky-700 px-1.5 py-0.5 rounded font-semibold">Milford</span>
+                </button>
+                <button onclick="switchDay('day3')" id="tab-day3" class="day-tab px-4 py-2.5 rounded-xl font-medium text-sm whitespace-nowrap transition-all border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 flex items-center gap-1.5">
+                    <span>Tue 17 Nov</span>
+                </button>
+                <button onclick="switchDay('day4')" id="tab-day4" class="day-tab px-4 py-2.5 rounded-xl font-medium text-sm whitespace-nowrap transition-all border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 flex items-center gap-1.5">
+                    <span>Wed 18 Nov</span>
+                </button>
+            </div>
 
-        function openAddModal() {
-            currentEditingElement = null;
-            document.getElementById('modalTitle').innerText = "Add Activity";
-            document.getElementById('modalTime').value = "";
-            document.getElementById('modalTitleInput').value = "";
-            document.getElementById('modalDesc').value = "";
-            document.getElementById('activityModal').style.display = 'flex';
-        }
+            <!-- Action Controls -->
+            <div class="flex items-center gap-2">
+                <button onclick="openModal()" class="flex-1 sm:flex-none bg-sky-600 hover:bg-sky-700 text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-sm transition-all flex items-center justify-center gap-2">
+                    <i class="ph ph-plus-circle text-lg">null</i> Add Activity
+                </button>
+                <div class="relative inline-block text-left">
+                    <button onclick="toggleDataMenu()" class="p-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl transition-all" title="Data options">
+                        <i class="ph ph-dots-three-vertical text-lg">null</i>
+                    </button>
+                    <div id="dataMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 py-1 z-20">
+                        <button onclick="exportData()" class="w-full text-left px-4 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-2">
+                            <i class="ph ph-download-simple text-sm">null</i> Export Plan (JSON)
+                        </button>
+                        <button onclick="triggerImport()" class="w-full text-left px-4 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-2">
+                            <i class="ph ph-upload-simple text-sm">null</i> Import Plan
+                        </button>
+                        <input type="file" id="importInput" class="hidden" accept=".json" onchange="importData(event)">
+                        <div class="border-t border-slate-100 my-1"></div>
+                        <button onclick="resetData()" class="w-full text-left px-4 py-2 text-xs font-medium text-red-600 hover:bg-red-50 flex items-center gap-2">
+                            <i class="ph ph-arrow-counter-clockwise text-sm">null</i> Reset to Default
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        function editItem(btn) {
-            currentEditingElement = btn.closest('.timeline-item');
-            const time = currentEditingElement.querySelector('.time-badge').innerText;
-            const title = currentEditingElement.querySelector('.activity-title').innerText;
-            const desc = currentEditingElement.querySelector('.activity-desc').innerText;
-            const dayId = currentEditingElement.closest('.day-container').id;
+        <!-- Timeline Day Containers -->
+        <div id="timelineContainer" class="min-h-[400px]">
+            <!-- Dynamic timelines will render here -->
+        </div>
 
-            document.getElementById('modalTitle').innerText = "Edit Activity";
-            document.getElementById('modalDaySelect').value = dayId;
-            document.getElementById('modalTime').value = time;
-            document.getElementById('modalTitleInput').value = title;
-            document.getElementById('modalDesc').value = desc;
-            document.getElementById('activityModal').style.display = 'flex';
-        }
+        <!-- Queenstown Adventure Options Reference Matrix -->
+        <section class="mt-12 bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-sm">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="p-2 bg-amber-500/10 text-amber-600 rounded-xl">
+                    <i class="ph ph-lightning text-xl">null</i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900">Adventure Activities Guide</h2>
+                    <p class="text-xs text-slate-500">Use these available time slots to fill open slots in your schedule</p>
+                </div>
+            </div>
 
-        function deleteItem(btn) {
-            if(confirm("Are you sure you want to remove this activity?")) {
-                btn.closest('.timeline-item').remove();
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-600">
+                    <thead class="bg-slate-50 text-slate-700 font-semibold text-xs uppercase tracking-wider border-y border-slate-200">
+                        <tr>
+                            <th class="py-3 px-3">Adventure</th>
+                            <th class="py-3 px-3">Available Timings</th>
+                            <th class="py-3 px-3">Duration</th>
+                            <th class="py-3 px-3 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-xs sm:text-sm">
+                        <tr class="hover:bg-slate-50/80 transition-colors">
+                            <td class="py-3 px-3 font-semibold text-slate-900">KJet Jetboat</td>
+                            <td class="py-3 px-3">10 AM, 11 AM, 12 PM, 1 PM, 2 PM, 3 PM, 4 PM, 5 PM, 6 PM</td>
+                            <td class="py-3 px-3">1 Hour</td>
+                            <td class="py-3 px-3 text-right">
+                                <button onclick="quickAddAdventure('KJet Jetboat', '10:00 AM', '1 Hour thrill ride on Lake Wakatipu')" class="text-sky-600 font-medium hover:underline text-xs">+ Quick Add</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/80 transition-colors">
+                            <td class="py-3 px-3 font-semibold text-slate-900">Kayaking</td>
+                            <td class="py-3 px-3">9:00 AM</td>
+                            <td class="py-3 px-3">3 to 4 hours</td>
+                            <td class="py-3 px-3 text-right">
+                                <button onclick="quickAddAdventure('Kayaking', '9:00 AM', 'Guided kayak tour')" class="text-sky-600 font-medium hover:underline text-xs">+ Quick Add</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/80 transition-colors">
+                            <td class="py-3 px-3 font-semibold text-slate-900">Shooting Range</td>
+                            <td class="py-3 px-3">10 AM, 11 AM, 12 PM, 1 PM, 2 PM, 3 PM, 4 PM</td>
+                            <td class="py-3 px-3">45 mins</td>
+                            <td class="py-3 px-3 text-right">
+                                <button onclick="quickAddAdventure('Shooting Range', '2:00 PM', 'Indoor target shooting experience')" class="text-sky-600 font-medium hover:underline text-xs">+ Quick Add</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/80 transition-colors">
+                            <td class="py-3 px-3 font-semibold text-slate-900">Jet Sprint & Clay Target</td>
+                            <td class="py-3 px-3">Flexible scheduling</td>
+                            <td class="py-3 px-3">2 - 3 hours</td>
+                            <td class="py-3 px-3 text-right">
+                                <button onclick="quickAddAdventure('Jet Sprint & Clay Shooting', '3:00 PM', 'Combo jet sprint & clay target shooting')" class="text-sky-600 font-medium hover:underline text-xs">+ Quick Add</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/80 transition-colors">
+                            <td class="py-3 px-3 font-semibold text-slate-900">Ziplining</td>
+                            <td class="py-3 px-3">10:00 AM to 5:00 PM (Hourly)</td>
+                            <td class="py-3 px-3">~2 hours</td>
+                            <td class="py-3 px-3 text-right">
+                                <button onclick="quickAddAdventure('Ziplining', '3:00 PM', 'Eco zip line tour down Bob\'s Peak')" class="text-sky-600 font-medium hover:underline text-xs">+ Quick Add</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/80 transition-colors">
+                            <td class="py-3 px-3 font-semibold text-slate-900">Shotover Canyon Swing</td>
+                            <td class="py-3 px-3">9:30 AM, 10:30 AM, 12:00 PM, 1:00 PM, 1:30 PM, 2:30 PM</td>
+                            <td class="py-3 px-3">2.5 to 4 hours</td>
+                            <td class="py-3 px-3 text-right">
+                                <button onclick="quickAddAdventure('Shotover Canyon Swing', '1:30 PM', 'High cliff canyon swing experience')" class="text-sky-600 font-medium hover:underline text-xs">+ Quick Add</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/80 transition-colors">
+                            <td class="py-3 px-3 font-semibold text-slate-900">AJ Hackett Bungy Jump</td>
+                            <td class="py-3 px-3">9:30 AM - 3:00 PM (Every 15 mins)</td>
+                            <td class="py-3 px-3">2.5 hours</td>
+                            <td class="py-3 px-3 text-right">
+                                <button onclick="quickAddAdventure('AJ Hackett Bungy Jump', '11:30 AM', 'Historic Kawarau Bridge Bungy')" class="text-sky-600 font-medium hover:underline text-xs">+ Quick Add</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs border-t border-slate-800 mt-12">
+        <p>Queenstown Nov 2026 Trip Planner • Built for easy sharing on GitHub Pages</p>
+    </footer>
+
+    <!-- Modal for Adding / Editing Activity -->
+    <div id="activityModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden transform transition-all">
+            <div class="bg-slate-900 px-6 py-4 text-white flex justify-between items-center">
+                <h3 id="modalHeaderTitle" class="font-bold text-base flex items-center gap-2">
+                    <i class="ph ph-clock text-sky-400">null</i> Add New Activity
+                </h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white transition-colors">
+                    <i class="ph ph-x text-lg">null</i>
+                </button>
+            </div>
+            
+            <form id="activityForm" onsubmit="handleFormSubmit(event)" class="p-6 space-y-4">
+                <input type="hidden" id="editingId">
+                
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Target Day</label>
+                    <select id="inputDay" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
+                        <option value="day1">Sun 15 Nov - Day 1</option>
+                        <option value="day2">Mon 16 Nov - Day 2 (Milford Sound)</option>
+                        <option value="day3">Tue 17 Nov - Day 3</option>
+                        <option value="day4">Wed 18 Nov - Day 4</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Time (e.g., 9:00 AM, 1:30 PM, 14:00)</label>
+                    <input type="text" id="inputTime" required placeholder="e.g. 9:30 AM" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
+                    <p class="text-[11px] text-slate-400 mt-1">Activities automatically position themselves chronologically based on this time.</p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Activity Title</label>
+                    <input type="text" id="inputTitle" required placeholder="e.g. Luge Ride / Lunch at Fergburger" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Description / Notes</label>
+                    <textarea id="inputDesc" rows="3" placeholder="Add notes, addresses, or details..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"></textarea>
+                </div>
+
+                <div class="pt-2 flex items-center justify-end gap-3">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 transition-all">Cancel</button>
+                    <button type="submit" class="bg-sky-600 hover:bg-sky-700 text-white text-sm font-semibold px-5 py-2 rounded-xl shadow-sm transition-all">Save & Position</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application JavaScript Logic -->
+    <script>
+        // Initial Default Itinerary Dataset
+        const DEFAULT_ITINERARY = {
+            day1: [
+                { id: '1', time: '8:00 AM', title: 'Home to Queenstown (Collect Car)', desc: 'Pick up rental car and hit the road.' },
+                { id: '2', time: '9:30 AM', title: 'Drive to Skyline', desc: 'Head to the Skyline Gondola terminal.' },
+                { id: '3', time: '11:00 AM', title: 'Take Gondola to Luge ride', desc: 'Ride up Bob\'s Peak for panoramic views.' },
+                { id: '4', time: '12:00 PM', title: 'Do Luge ride', desc: 'Gravity-fueled track racing.' },
+                { id: '5', time: '1:00 PM', title: 'Lunch _________', desc: 'Open slot for lunch in Queenstown town center.' },
+                { id: '6', time: '3:00 PM', title: 'Bob’s Cove Lake', desc: 'Scenic nature trail and lake lookout.' },
+                { id: '7', time: '4:00 PM', title: 'Sam Summers Hut', desc: 'Historic gold miner hut walking trail.' },
+                { id: '8', time: '6:00 PM', title: 'Do Groceries (Woolworths)', desc: 'Buy snacks and essentials.' },
+                { id: '9', time: '7:00 PM', title: 'Dinner _____________', desc: 'Unscheduled dinner slot.' },
+                { id: '10', time: '9:00 PM', title: 'Home / Accommodation', desc: 'Rest up for tomorrow\'s Milford Sound drive.' }
+            ],
+            day2: [
+                { id: '11', time: '6:30 AM', title: 'Leave Home', desc: 'Early start for long drive to Milford Sound.' },
+                { id: '12', time: '11:00 AM', title: 'Milford Sound Cruise', desc: 'Scenic fiord boat cruise.' },
+                { id: '13', time: '1:30 PM', title: 'Lunch (Grab & Go)', desc: 'Grab and go due to time constraint to fit all lookouts before sunset.' },
+                { id: '14', time: '2:00 PM', title: 'Milford Road Scenic Lookouts', desc: 'Stop at scenic lookouts (max 30 mins each):\n• The Chasm Walk (20 min walk, 400m return track)\n• Hundred Falls\n• Homer Tunnel\n• Gertrude Valley Lookout\n• Monkey Creek (Fresh drinkable spring water)\n• Lake Marian Track (20 min walk along waterfall)\n• Hollyford Valley & Pop\'s View Lookout\n• Lake Gunn Viewpoint (3.25km, 480m altitude)\n• Eglinton Valley' },
+                { id: '15', time: '9:00 PM', title: 'Dinner _________________', desc: 'Late dinner back in Queenstown.' }
+            ],
+            day3: [
+                { id: '16', time: '10:00 AM', title: 'KJet Jetboat', desc: 'Thrilling 1-hour jetboat ride.' },
+                { id: '17', time: '11:00 AM', title: 'TSS Earnslaw with Lunch', desc: 'Steamship cruise across Lake Wakatipu to Walter Peak Farm (or 1:00 PM slot).' },
+                { id: '18', time: '3:00 PM', title: '__________ (Open Slot for Adventure Activity)', desc: 'Choose Bungy, Canyon Swing, or Ziplining from guide table below.' },
+                { id: '19', time: '9:00 PM', title: 'Dinner ________', desc: 'Evening meal.' }
+            ],
+            day4: [
+                { id: '20', time: '9:00 AM', title: '__________ (Not decided yet)', desc: 'Morning activity, souvenir shopping, or quick walk.' },
+                { id: '21', time: '12:00 PM', title: 'Head to Airport & Drop Rental Car', desc: 'Return car with full tank of petrol.' },
+                { id: '22', time: '3:00 PM', title: 'Return Flight Departure', desc: 'Flight back home!' }
+            ]
+        };
+
+        // App State
+        let itineraryData = {};
+        let activeDay = 'day1';
+
+        // Initialize App
+        window.onload = function() {
+            loadData();
+            renderTimeline();
+        };
+
+        // Load data from localStorage or fallback to default
+        function loadData() {
+            const saved = localStorage.getItem('nz_queenstown_itinerary');
+            if (saved) {
+                try {
+                    itineraryData = JSON.parse(saved);
+                } catch(e) {
+                    itineraryData = JSON.parse(JSON.stringify(DEFAULT_ITINERARY));
+                }
+            } else {
+                itineraryData = JSON.parse(JSON.stringify(DEFAULT_ITINERARY));
             }
         }
 
-        function closeModal() {
-            document.getElementById('activityModal').style.display = 'none';
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('nz_queenstown_itinerary', JSON.stringify(itineraryData));
         }
 
-        function saveActivity() {
-            const dayId = document.getElementById('modalDaySelect').value;
-            const time = document.getElementById('modalTime').value;
-            const title = document.getElementById('modalTitleInput').value;
-            const desc = document.getElementById('modalDesc').value;
+        // Reliable Time Parsing Function to Minutes from midnight (0 - 1439)
+        function parseTimeToMinutes(timeStr) {
+            if (!timeStr) return 0;
+            
+            let str = timeStr.trim().toLowerCase();
+            
+            // Check for AM / PM
+            const isPM = str.includes('pm');
+            const isAM = str.includes('am');
+            
+            // Strip out non-numeric parts except colon
+            str = str.replace(/[^\d:]/g, '');
+            
+            let hours = 0;
+            let minutes = 0;
+            
+            if (str.includes(':')) {
+                const parts = str.split(':');
+                hours = parseInt(parts[0], 10) || 0;
+                minutes = parseInt(parts[1], 10) || 0;
+            } else {
+                // E.g., "9", "10", "14"
+                hours = parseInt(str, 10) || 0;
+            }
+            
+            // Convert to 24 hour clock if AM/PM designated
+            if (isPM && hours < 12) hours += 12;
+            if (isAM && hours === 12) hours = 0;
+            
+            return (hours * 60) + minutes;
+        }
 
-            if(!title || !time) {
-                alert("Please provide both time and title.");
+        // Switch active day tab
+        function switchDay(dayId) {
+            activeDay = dayId;
+            document.querySelectorAll('.day-tab').forEach(tab => {
+                tab.className = "day-tab px-4 py-2.5 rounded-xl font-medium text-sm whitespace-nowrap transition-all border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 flex items-center gap-1.5";
+            });
+            
+            const activeTab = document.getElementById(`tab-${dayId}`);
+            if (activeTab) {
+                activeTab.className = "day-tab px-4 py-2.5 rounded-xl font-medium text-sm whitespace-nowrap transition-all border border-transparent bg-slate-900 text-white shadow-sm flex items-center gap-1.5";
+            }
+            
+            renderTimeline();
+        }
+
+        // Render timeline for current day sorted chronologically
+        function renderTimeline(highlightId = null) {
+            const container = document.getElementById('timelineContainer');
+            const items = itineraryData[activeDay] || [];
+            
+            // Sort items by computed time in minutes
+            items.sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time));
+
+            if (items.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white rounded-2xl p-12 text-center border border-slate-200">
+                        <i class="ph ph-calendar-x text-4xl text-slate-300 mb-2 inline-block">null</i>
+                        <p class="text-slate-500 font-medium">No activities planned for this day yet.</p>
+                        <button onclick="openModal()" class="mt-3 text-sm text-sky-600 font-semibold hover:underline">+ Add an activity</button>
+                    </div>
+                `;
                 return;
             }
 
-            const targetTimeline = document.querySelector(`#${dayId} .timeline`);
+            let html = `<div class="relative pl-6 sm:pl-8 border-l-2 border-sky-500 space-y-6 my-2">`;
 
-            if(currentEditingElement) {
-                // Update existing
-                currentEditingElement.querySelector('.time-badge').innerText = time;
-                currentEditingElement.querySelector('.activity-title').innerText = title;
-                currentEditingElement.querySelector('.activity-desc').innerText = desc;
-                
-                // Move if day changed
-                if(currentEditingElement.closest('.day-container').id !== dayId) {
-                    currentEditingElement.remove();
-                    targetTimeline.appendChild(currentEditingElement);
-                }
-            } else {
-                // Create new item
-                const newItem = document.createElement('div');
-                newItem.className = 'timeline-item';
-                newItem.innerHTML = `
-                    <span class="time-badge">${time}</span>
-                    <h3 class="activity-title">${title}</h3>
-                    <p class="activity-desc">${desc}</p>
-                    <div class="item-actions">
-                        <button class="btn-sm" onclick="editItem(this)">Edit</button>
-                        <button class="btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
+            items.forEach((item) => {
+                const isHighlighted = item.id === highlightId;
+                const highlightClass = isHighlighted ? 'animate-highlight ring-2 ring-sky-500' : '';
+
+                html += `
+                    <div id="item-${item.id}" class="relative group bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm hover:shadow-md transition-all ${highlightClass}">
+                        <!-- Timeline Bullet Node -->
+                        <div class="absolute -left-[31px] sm:-left-[39px] top-6 w-4 h-4 rounded-full bg-sky-500 border-4 border-slate-50 group-hover:scale-125 transition-transform"></div>
+                        
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                            <span class="inline-flex items-center gap-1.5 bg-sky-50 text-sky-700 text-xs font-bold px-3 py-1 rounded-full w-fit">
+                                <i class="ph ph-clock">null</i> ${item.time}
+                            </span>
+                            
+                            <!-- Action Buttons -->
+                            <div class="flex items-center gap-2 self-end sm:self-auto">
+                                <button onclick="editActivity('${item.id}')" class="px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors flex items-center gap-1 border border-slate-200">
+                                    <i class="ph ph-pencil">null</i> Edit
+                                </button>
+                                <button onclick="deleteActivity('${item.id}')" class="px-2.5 py-1 text-xs font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors flex items-center gap-1 border border-red-100">
+                                    <i class="ph ph-trash">null</i> Delete
+                                </button>
+                            </div>
+                        </div>
+
+                        <h3 class="text-base sm:text-lg font-bold text-slate-900">${escapeHtml(item.title)}</h3>
+                        
+                        ${item.desc ? `<p class="text-xs sm:text-sm text-slate-600 mt-1 whitespace-pre-line leading-relaxed">${escapeHtml(item.desc)}</p>` : ''}
+                        
+                        ${item.images && item.images.length ? `
+                            <div class="grid grid-cols-2 gap-2 mt-3">
+                                ${item.images.map(img => `
+                                    <div class="relative h-24 rounded-xl overflow-hidden border border-slate-200">
+                                        <img src="${img.url}" alt="${img.name}" class="w-full h-full object-cover">
+                                        <span class="absolute bottom-1 left-1 text-[10px] bg-slate-900/80 text-white px-2 py-0.5 rounded-md backdrop-blur-sm">${img.name}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
                     </div>
                 `;
-                targetTimeline.appendChild(newItem);
+            });
+
+            html += `</div>`;
+            container.innerHTML = html;
+
+            // Scroll highlighted element into view if needed
+            if (highlightId) {
+                setTimeout(() => {
+                    const el = document.getElementById(`item-${highlightId}`);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
             }
+        }
+
+        // Handle Add/Edit Form submission
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const editingId = document.getElementById('editingId').value;
+            const targetDay = document.getElementById('inputDay').value;
+            const time = document.getElementById('inputTime').value.trim();
+            const title = document.getElementById('inputTitle').value.trim();
+            const desc = document.getElementById('inputDesc').value.trim();
+
+            let targetId = editingId;
+
+            if (editingId) {
+                // If day changed during edit, remove from old day first
+                Object.keys(itineraryData).forEach(day => {
+                    itineraryData[day] = itineraryData[day].filter(item => item.id !== editingId);
+                });
+                
+                // Add to new target day
+                itineraryData[targetDay].push({ id: editingId, time, title, desc });
+            } else {
+                // Add new activity
+                targetId = Date.now().toString();
+                if (!itineraryData[targetDay]) itineraryData[targetDay] = [];
+                itineraryData[targetDay].push({ id: targetId, time, title, desc });
+            }
+
+            saveData();
             closeModal();
+            
+            // Switch to target day and re-render with chronological sorting & highlight
+            activeDay = targetDay;
+            switchDay(activeDay);
+            renderTimeline(targetId);
+        }
+
+        // Open Modal for new entry
+        function openModal() {
+            document.getElementById('activityForm').reset();
+            document.getElementById('editingId').value = '';
+            document.getElementById('inputDay').value = activeDay;
+            document.getElementById('modalHeaderTitle').innerHTML = `<i class="ph ph-plus-circle text-sky-400">null</i> Add New Activity`;
+            document.getElementById('activityModal').classList.remove('hidden');
+        }
+
+        // Open Modal to edit existing entry
+        function editActivity(id) {
+            let foundItem = null;
+            let foundDay = activeDay;
+
+            Object.keys(itineraryData).forEach(day => {
+                const item = itineraryData[day].find(i => i.id === id);
+                if (item) {
+                    foundItem = item;
+                    foundDay = day;
+                }
+            });
+
+            if (!foundItem) return;
+
+            document.getElementById('editingId').value = foundItem.id;
+            document.getElementById('inputDay').value = foundDay;
+            document.getElementById('inputTime').value = foundItem.time;
+            document.getElementById('inputTitle').value = foundItem.title;
+            document.getElementById('inputDesc').value = foundItem.desc || '';
+
+            document.getElementById('modalHeaderTitle').innerHTML = `<i class="ph ph-pencil text-sky-400">null</i> Edit Activity`;
+            document.getElementById('activityModal').classList.remove('hidden');
+        }
+
+        // Delete activity item
+        function deleteActivity(id) {
+            if (confirm('Are you sure you want to delete this activity?')) {
+                itineraryData[activeDay] = itineraryData[activeDay].filter(item => item.id !== id);
+                saveData();
+                renderTimeline();
+            }
+        }
+
+        // Quick add adventure from matrix reference table
+        function quickAddAdventure(title, time, desc) {
+            document.getElementById('editingId').value = '';
+            document.getElementById('inputDay').value = activeDay;
+            document.getElementById('inputTime').value = time;
+            document.getElementById('inputTitle').value = title;
+            document.getElementById('inputDesc').value = desc;
+            
+            document.getElementById('modalHeaderTitle').innerHTML = `<i class="ph ph-lightning text-amber-400">null</i> Quick Add Adventure`;
+            document.getElementById('activityModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('activityModal').classList.add('hidden');
+        }
+
+        function toggleDataMenu() {
+            document.getElementById('dataMenu').classList.toggle('hidden');
+        }
+
+        // Export itinerary data as JSON file
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(itineraryData, null, 2));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", `Queenstown_Itinerary_2026.json`);
+            dlAnchorElem.click();
+            toggleDataMenu();
+        }
+
+        function triggerImport() {
+            document.getElementById('importInput').click();
+            toggleDataMenu();
+        }
+
+        // Import JSON file
+        function importData(event) {
+            const fileReader = new FileReader();
+            fileReader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (parsed.day1 && parsed.day2) {
+                        itineraryData = parsed;
+                        saveData();
+                        renderTimeline();
+                        alert('Itinerary successfully imported!');
+                    } else {
+                        alert('Invalid itinerary JSON file format.');
+                    }
+                } catch(err) {
+                    alert('Error parsing JSON file.');
+                }
+            };
+            fileReader.readAsText(event.target.files[0]);
+        }
+
+        // Reset to original default plan
+        function resetData() {
+            if (confirm('Reset back to original itinerary plan? Any custom changes will be overwritten.')) {
+                itineraryData = JSON.parse(JSON.stringify(DEFAULT_ITINERARY));
+                saveData();
+                renderTimeline();
+                toggleDataMenu();
+            }
+        }
+
+        // Helper to escape HTML strings
+        function escapeHtml(str) {
+            return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;") : '';
         }
     </script>
 </body>
